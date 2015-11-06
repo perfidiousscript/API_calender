@@ -62,17 +62,27 @@ app.post('/data', function(req,res){
                     console.log("Error inserting data: ", err);
                     res.send(false);
                 }
-
                 res.send(true);
             });
-
     });
 
 });
 
 app.delete('/data', function(req,res){
 
+    console.log("Request body: ", req.body);
 
+    pg.connect(connectionString, function(err,client){
+        client.query("DELETE FROM people WHERE id = " + req.body.id,
+            function(err, result) {
+                if (err) {
+                    console.log("Error deleting data: ", err);
+                    res.send(false);
+                }
+                res.send(true);
+            }
+        );
+    });
 });
 
 app.get("/*", function(req,res){

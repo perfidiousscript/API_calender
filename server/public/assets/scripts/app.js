@@ -48,14 +48,12 @@ function addSomeone(){
 function deletePerson(){
    var deletedId = {"id" : $(this).data("id")};
 
-   console.log("Meaningful Log: ", deletedId);
-
    $.ajax({
       type: "DELETE",
       url: "/data",
       data: deletedId,
       success: function(data){
-
+         console.log("Success!");
          getData();
       }
    })
