@@ -7,7 +7,7 @@ $(document).ready(function(){
          values[field.name] = field.value;
       });
 
-      getData(values);
+      search(values);
    });
 
    $("#addSomeone").submit(addSomeone);
@@ -20,6 +20,17 @@ function getData(values){
    $.ajax({
       type: "GET",
       url: "/data",
+      data: values,
+      success: function(data){
+         updateDOM(data);
+      }
+   })
+}
+
+function search(values){
+   $.ajax({
+      type: "GET",
+      url: "/search",
       data: values,
       success: function(data){
          updateDOM(data);

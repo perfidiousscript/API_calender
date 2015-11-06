@@ -36,6 +36,31 @@ app.get('/data', function(req,res){
     });
 });
 
+app.get('/search', function(req,res){
+    var results = [];
+
+    //SQL Query > SELECT data from table
+    pg.connect(connectionString, function (err, client, done) {
+        var query = client.query("SELECT * FROM people WHERE name = '" +req.query.peopleSearch + "'");
+        console.log("Query looks like: ", req.query.peopleSearch);
+        // Stream results back one row at a time, push into results array
+        query.on('row', function (row) {
+            results.push(row);
+        });
+
+        // After all data is returned, close connection and return results
+        query.on('end', function () {
+            client.end();
+            return res.json(results);
+        });
+
+        // Handle Errors
+        if (err) {
+            console.log(err);
+        }
+    });
+});
+
 // Add a new person
 app.post('/data', function(req,res){
     console.log(req);
